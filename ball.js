@@ -43,7 +43,9 @@ Ball.prototype.collisionDetect = function() {
       var distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance < this.size + balls[j].size && balls[j].color === "red") {
-        // balls[j].color = this.color = 'rgb(' + random(0, 255) + ',' + random(0, 255) + ',' + random(0, 255) +')';
+        if (this.color === "blue") {
+          window.gameState.alive = false;
+        }
         balls[j].color = this.color = "red";
       }
     }

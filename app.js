@@ -12,6 +12,11 @@ var keyboardState = {
   arrowDownPressed: false
 };
 
+var gameState = {
+  alive: true,
+  animationFrames: 0
+};
+
 var balls = [];
 
 while (balls.length < 50) {
@@ -23,7 +28,6 @@ while (balls.length < 50) {
     random(0 + size, height - size),
     random(-7, 7),
     random(-7, 7),
-    // 'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) +')',
     size
   );
 
@@ -38,4 +42,25 @@ balls[0].velY = 0;
 window.addEventListener("keydown", keyDownHandler);
 window.addEventListener("keyup", keyUpHandler);
 
-loop(balls);
+function loop() {
+  ctx.fillStyle = "white";
+  ctx.font = "90px Arial";
+  if (gameState.alive) {
+    ++gameState.animationFrames;
+  }
+  ctx.fillText("Points: " + gameState.animationFrames, 10, 100);
+  ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+  ctx.fillRect(0, 0, width, height);
+
+  balls[0].velX = getVelX(keyboardState);
+  balls[0].velY = getVelY(keyboardState);
+
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].draw();
+    balls[i].update();
+    balls[i].collisionDetect();
+  }
+  requestAnimationFrame(loop);
+}
+
+loop();
